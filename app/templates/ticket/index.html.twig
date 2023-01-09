@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket index{% endblock %}
+
+{% block body %}
+<nav class="navbar bg-light" style="background-color:back">
+  <form class="container-fluid justify-content-start">
+    <button class="btn btn-outline-success me-2" type="button">Main button</button>
+    <button class="btn btn-sm btn-outline-secondary" type="button">Smaller button</button>
+  </form>
+</nav>
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand">Navbar</a>
+    <a><button class="btn btn-outline-success me-2" type="button">Main button</button></a>
+    <form class="d-flex" role="search">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+    <h1>Ticket index</h1>
+
+    <table class="table" >
+        <thead class="p-3 mb-2 bg-dark text-white">
+          <tr>
+                <th>Id</th>
+                <th>Label</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.label }}</td>
+                <td>{{ ticket.description }}</td>
+                <td><form method="post" action="{{ path('app_ticket_delete', {'id': ticket.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <a href="{{ path('app_ticket_show', {'id': ticket.id}) }}"><button type="button" class="btn btn-info">show</button></a>
+                    <a href="{{ path('app_ticket_edit', {'id': ticket.id}) }}"><button type="button" class="btn btn-success">edit</button></a>
+                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ticket.id) }}">
+                     <button  class="btn btn-danger">Delete</button>
+                   
+                   </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ticket_new') }}"><button type="button" class="btn btn-warning">Create new</button></a>
+{% endblock %}
